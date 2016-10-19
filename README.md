@@ -12,13 +12,13 @@ ghci <br/>
 beginParse "ll1:xi1e1:yi0e1:v1:xel1:xi2e1:yi2e1:v1:xee"
 
 Example input : "ll1:xi1e1:yi0e1:v1:xel1:xi2e1:yi2e1:v1:xee"
-Represents board :
+Represents board : <br/>
 +-+-+-+<br/>
-| | | |<br/>
+|-|-|-|<br/>
 +-+-+-+<br/>
-|X| | |<br/>
+|X|-|-|<br/>
 +-+-+-+<br/>
-| | |X|<br/>
+|-|-|X|<br/>
 +-+-+-+<br/>
 
 More inputs can be generated [here](http://tictactoe.homedir.eu/test/31)
