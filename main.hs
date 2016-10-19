@@ -1,14 +1,3 @@
-doubleMe :: Int -> Int
-doubleMe x = x + x
-
-doubleUs :: Int -> Int -> Int
-doubleUs x y = doubleMe x + doubleMe y
-
-doubleSmallNumber :: Int -> Int
-doubleSmallNumber x = if x >= 100
-                        then x 
-                        else x * 2
-
 {-
 message to validate
 board:
@@ -20,35 +9,63 @@ board:
 | | | |
 +-+-+-+
 -}
-
-message :: String
-message = "ll1:xi0e1:yi2e1:v1:xee"
-
 type Move = (Int, Int, Char)
 type Moves = [Move]
 
-type Row = (Char, Char, Char)
-type Board = (Row, Row, Row)
+-- type Row = (Char, Char, Char)
+-- type Board = (Row, Row, Row)
 
-boomBang :: [Int] -> [String]
-boomBang xs = [if x < 10 then "BOOM!" else "BANG!" | x <- xs, odd x]
+{-
+-----------------------------------------
+-- TicTacToe related code
+-----------------------------------------
+-}
+message :: String
+message = "ll1:xi0e1:yi2e1:v1:xee"
+-- x -- 1:x i0e
+-- y -- 1:y i2e
+-- v -- 1:v 1:x
+
+validate :: String -> Bool
+validate a = True
 
 beginParse :: String -> Moves
-beginParse ('l':rest) = parseMoves
+beginParse ('l':rest) =  reverse (parseMoves [] rest)
+beginParse _ = error "beginParse error : blogas saraso formatas"
 
-parseTuples acc "]" = acc
-parseTuples acc rest =
-  let
-    (tuple, restt) = parseTuple rest
-    sepRest = readSeparator restt
-  in
-    parseTuples (tuple:acc) sepRest
+parseMoves :: [Move] -> String -> Moves
+parseMoves val ['e'] = val
+parseMoves val rest =
+    let 
+        (move, rest1) = parseMove rest
+    in
+        parseMoves (move:val) rest1
+--parseMoves _ _ = error "parseMoves error : moves list has no start symbol"
 
+parseMove :: String -> ((Int, Int, Char), String)
+parseMove ('l':rest) =
+    let
+        (x, restx)  = readDigit rest
+        (y, resty)  = readDigit restx
+        (p, restxy) = readPlayer resty
+    in
+      case restxy of
+          ('e':remain) -> ((x, y, p), remain)
+          _            -> error "parseMove error : unclosed move"  
+ 
 readDigit :: String -> (Int, String)
-readDigit ('0':rest) = (0, rest)
-readDigit ('1':rest) = (1, rest) 
-readDigit ('2':rest) = (2, rest) 
-readDigit _ = error "Digit expected" 
+readDigit ('1' : ':' : _ : 'i' : '0' : 'e' : rest)  = (0, rest)
+readDigit ('1' : ':' : _ : 'i' : '1' : 'e' : rest)  = (1, rest) 
+readDigit ('1' : ':' : _ : 'i' : '2' : 'e' : rest)  = (2, rest) 
+readDigit _ = error "readDigit error : wrong format"
+
+--TODO X and O in smarter way
+readPlayer :: String -> (Char, String)
+readPlayer ('1' : ':' : 'v' : '1' : ':' : 'x' : rest)  = ('x', rest)
+readPlayer ('1' : ':' : 'v' : '1' : ':' : 'X' : rest)  = ('x', rest)
+readPlayer ('1' : ':' : 'v' : '1' : ':' : 'o' : rest)  = ('o', rest)
+readPlayer ('1' : ':' : 'v' : '1' : ':' : 'O' : rest)  = ('o', rest)
+readPlayer _ = error "readPlayer error : wrong format"
 
 
 
