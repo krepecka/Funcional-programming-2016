@@ -1,3 +1,5 @@
+import Data.List
+
 {-
 message to validate
 board:
@@ -27,7 +29,15 @@ message = "ll1:xi0e1:yi2e1:v1:xee"
 -- v -- 1:v 1:x
 
 validate :: String -> Bool
-validate a = True
+validate str = 
+    let
+        moves = beginParse str
+        a = isMoveCountOk moves
+    in
+        a && True
+
+
+validate _ = error "Cannot validate unknown input"
 
 beginParse :: String -> Moves
 beginParse ('l':rest) =  reverse (parseMoves [] rest)
@@ -68,8 +78,30 @@ readPlayer ('1' : ':' : 'v' : '1' : ':' : 'O' : rest)  = ('o', rest)
 readPlayer _ = error "readPlayer error : wrong format"
 
 
+{-
+Validating a board :
+    1. Count moves for each player
+    2. Count writes to each cell
+    3. Replay the game and check for winner
+-}
 
---board :: Board
---board = []
+isMoveCountOk :: Moves -> Bool
+isMoveCountOk moves =
+    let
+        xCount = countPlayerMoves moves 'x'
+        yCount = countPlayerMoves moves 'o'
+    in 
+        abs(xCount - yCount) < 2
+
+countPlayerMoves :: Moves -> Char -> Int
+countPlayerMoves [] _ = 0
+countPlayerMoves moves char = length (filter (\(x, y, c) -> c == char) moves)
+
+-- countMoves :: Move -> Int -> Int
+-- countMoves [] acc = acc++
+-- countMoves 
+
+-- lstC :: Moves -> [Int]
+-- lstC moves = [1 | x <- moves, x ]
 
 
