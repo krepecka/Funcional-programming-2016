@@ -1,27 +1,11 @@
 import Data.List
 
-{-
-message to validate
-board:
-+-+-+-+
-| | |X|
-+-+-+-+
-| | | |
-+-+-+-+
-| | | |
-+-+-+-+
--}
 type Move = (Int, Int, Char)
 type Moves = [Move]
 
 -- type Row = (Char, Char, Char)
 -- type Board = (Row, Row, Row)
 
-{-
------------------------------------------
--- TicTacToe related code
------------------------------------------
--}
 message :: String
 message = "ll1:xi0e1:yi2e1:v1:xee"
 -- x -- 1:x i0e
@@ -33,15 +17,13 @@ validate str =
     let
         moves = beginParse str
         a = isMoveCountOk moves
+        b = isCoordUniq (map(\(x,y,c) -> [x,y]) moves) 
     in
-        a && True
-
-
-validate _ = error "Cannot validate unknown input"
+        a && b
 
 beginParse :: String -> Moves
 beginParse ('l':rest) =  reverse (parseMoves [] rest)
-beginParse _ = error "beginParse error : blogas saraso formatas"
+beginParse _ = error "beginParse error : wrong list format"
 
 parseMoves :: [Move] -> String -> Moves
 parseMoves val ['e'] = val
@@ -50,7 +32,6 @@ parseMoves val rest =
         (move, rest1) = parseMove rest
     in
         parseMoves (move:val) rest1
---parseMoves _ _ = error "parseMoves error : moves list has no start symbol"
 
 parseMove :: String -> ((Int, Int, Char), String)
 parseMove ('l':rest) =
@@ -77,12 +58,10 @@ readPlayer ('1' : ':' : 'v' : '1' : ':' : 'o' : rest)  = ('o', rest)
 readPlayer ('1' : ':' : 'v' : '1' : ':' : 'O' : rest)  = ('o', rest)
 readPlayer _ = error "readPlayer error : wrong format"
 
-
 {-
 Validating a board :
     1. Count moves for each player
     2. Count writes to each cell
-    3. Replay the game and check for winner
 -}
 
 isMoveCountOk :: Moves -> Bool
@@ -97,11 +76,14 @@ countPlayerMoves :: Moves -> Char -> Int
 countPlayerMoves [] _ = 0
 countPlayerMoves moves char = length (filter (\(x, y, c) -> c == char) moves)
 
--- countMoves :: Move -> Int -> Int
--- countMoves [] acc = acc++
--- countMoves 
+-- Eq a is context .. ? 
+isCoordUniq :: (Eq a) => [a] -> Bool
+isCoordUniq [] = True
+isCoordUniq (h:rest) = (h `notElem` rest) && isCoordUniq rest
 
--- lstC :: Moves -> [Int]
--- lstC moves = [1 | x <- moves, x ]
+--for fun
+foldInts :: Int -> [Int] -> Int
+foldInts acc [] = acc
+foldInts acc (h:rest) = foldInts (acc + h) rest 
 
 
