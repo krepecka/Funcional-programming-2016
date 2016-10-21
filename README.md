@@ -8,7 +8,7 @@ the program takes a string encoded in Bencode(without dictionaries)
 which represents TicTacToe board state at any point in the game and outputs if board state is valid
 
 #### Functions
-beginParse "ll1:xi1e1:yi0e1:v1:xel1:xi2e1:yi2e1:v1:xee" -- outputs list of moves made
+beginParse "ll1:xi1e1:yi0e1:v1:xel1:xi2e1:yi2e1:v1:xee" -- outputs list of moves made<br/>
 validate "ll1:xi1e1:yi0e1:v1:xel1:xi2e1:yi2e1:v1:xee" -- outputs if board state is valid
 
 #### Running 
