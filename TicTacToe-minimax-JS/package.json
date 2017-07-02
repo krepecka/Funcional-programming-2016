@@ -1,0 +1,21 @@
+{
+  "name": "tictactoe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "author": "krepecka",
+  "license": "ISC",
+  "dependencies": {
+    "promise": "^7.1.1",
+    "request": "^2.79.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "jsverify": "^0.7.4",
+    "mocha": "^3.2.0",
+    "testcheck": "^0.1.4"
+  }
+}
